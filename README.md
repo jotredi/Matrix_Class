@@ -1,5 +1,5 @@
 # Matrix_Class
-This is a very useful, robust, extensible and reusable Matrix class with the most common matrix/vector operations and methods for C++.
+This is a very useful, extensible and reusable Matrix class with the most common matrix/vector operations and methods for C++.
 
 ### Constructors
 * `matrix(r, c, initial)`: create a matrix with `r` rows, `c` columns & `initial` as initial value.
