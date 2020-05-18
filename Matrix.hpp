@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <limits>
 
 template <class X>
 class matrix{
@@ -43,6 +44,9 @@ public:
   unsigned getCols() const;
   void print() const;
   X sum();
+  X max();
+  X sumRow(const unsigned &);
+  X sumCol(const unsigned &);
 
 private:
   unsigned rows, cols;
@@ -258,6 +262,33 @@ X matrix<X>::sum(){
   for(unsigned i=0; i<rows; ++i){
     for(unsigned j=0; j<cols; ++j) sum += M[i][j];
   }
+  return sum;
+}
+
+//Max value
+template <class X>
+X matrix<X>::max(){
+  X max = - std::numeric_limits<X>::infinity();
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j){
+      if (M[i][j] > max)  max = M[i][j];
+    }
+  }
+  return max;
+}
+
+//Sum of elements from a row
+template <class X>
+X matrix<X>::sumRow(const unsigned &i){
+  X sum = 0;
+  for (unsigned c=0; c<cols; ++c) sum += M[i][c];
+  return sum;
+}
+//Sum of elements from a column
+template <class X>
+X matrix<X>::sumCol(const unsigned &j){
+  X sum = 0;
+  for (unsigned r=0; r<rows; ++r) sum += M[r][j];
   return sum;
 }
 
