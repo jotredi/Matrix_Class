@@ -24,6 +24,8 @@ matrix<double> v (3,1);
 * `getRows()`: return number of rows.
 * `getCols()`: return number of columns.
 * `sum()`: return the sum of all matrix elements.
+* `max()`: return the maximum value.
+* `min()`: return the minimum value.
 * `print()`: print matrix.
 
 ### Rows & Cols Methods
@@ -32,6 +34,8 @@ matrix<double> v (3,1);
 * `setCol(j, v)`: set the jth column with vector `v`.
 * `getRow(i)`: get ith row.
 * `getCol(j)`: get jth column.
+* `sumRow(i)`: sum of elements from ith row.
+* `sumCol(j)`: sum of elements from jth column.
 
 ### Matrix Operations
 * `A + B`: matrix sum.
