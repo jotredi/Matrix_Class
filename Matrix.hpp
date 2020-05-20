@@ -23,6 +23,8 @@ public:
   void setCol(unsigned, std::vector<X>);
   std::vector<X> getRow(const unsigned &);
   std::vector<X> getCol(const unsigned &);
+  X sumRow(const unsigned &);
+  X sumCol(const unsigned &);
 
   //Matrix Operations
   matrix<X> operator+(matrix<X>);
@@ -45,8 +47,7 @@ public:
   void print() const;
   X sum();
   X max();
-  X sumRow(const unsigned &);
-  X sumCol(const unsigned &);
+  X min();
 
 private:
   unsigned rows, cols;
@@ -118,6 +119,21 @@ std::vector<X> matrix<X>::getCol(const unsigned &j){
   std::vector<X> v(rows);
   for(unsigned i=0; i<rows; ++i) v[i]=M[i][j];
   return v;
+}
+
+//Sum of elements from a row
+template <class X>
+X matrix<X>::sumRow(const unsigned &i){
+  X sum = 0;
+  for (unsigned c=0; c<cols; ++c) sum += M[i][c];
+  return sum;
+}
+//Sum of elements from a column
+template <class X>
+X matrix<X>::sumCol(const unsigned &j){
+  X sum = 0;
+  for (unsigned r=0; r<rows; ++r) sum += M[r][j];
+  return sum;
 }
 
 //Addition of two matrices
@@ -277,19 +293,16 @@ X matrix<X>::max(){
   return max;
 }
 
-//Sum of elements from a row
+//Min value
 template <class X>
-X matrix<X>::sumRow(const unsigned &i){
-  X sum = 0;
-  for (unsigned c=0; c<cols; ++c) sum += M[i][c];
-  return sum;
-}
-//Sum of elements from a column
-template <class X>
-X matrix<X>::sumCol(const unsigned &j){
-  X sum = 0;
-  for (unsigned r=0; r<rows; ++r) sum += M[r][j];
-  return sum;
+X matrix<X>::min(){
+  X min = std::numeric_limits<X>::infinity();
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j){
+      if (M[i][j] < min)  min = M[i][j];
+    }
+  }
+  return min;
 }
 
 //Matrix access in the form M(i,j)
