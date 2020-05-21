@@ -23,7 +23,7 @@ matrix<double> v (3,1);
 * `M (i,j)`: access the ith, jth element.
 * `getRows()`: return number of rows.
 * `getCols()`: return number of columns.
-* `sum()`: return the sum of all matrix elements.
+* `sum()`: return the sum of all elements.
 * `max()`: return the maximum value.
 * `min()`: return the minimum value.
 * `print()`: print matrix.
