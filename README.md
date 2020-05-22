@@ -19,13 +19,10 @@ matrix<double> v (3,1);
 // If initial value is not given, it is initialized with 0's.
 ```
 
-### Matrix Methods
+### Access Methods
 * `M (i,j)`: access the ith, jth element.
 * `getRows()`: return number of rows.
 * `getCols()`: return number of columns.
-* `sum()`: return the sum of all elements.
-* `max()`: return the maximum value.
-* `min()`: return the minimum value.
 * `print()`: print matrix.
 
 ### Rows & Cols Methods
@@ -39,18 +36,28 @@ matrix<double> v (3,1);
 
 ### Matrix Operations
 * `A + B`: matrix sum.
-* `A - B`: matrix substraction.
+* `A - B`: matrix subtraction.
 * `A * B`: matrix multiplication.
 * `A & B`: element-wise matrix multiplication.
 * `A.T()`: transpose of matrix A.
 
 ### Scalar Operation
 * `A + s`: scalar sum.
-* `A - s`: scalar substraction.
+* `A - s`: scalar subtraction.
 * `A * s`: scalar multiplication.
 * `A / B`: scalar division.
 * `A ^ p`: raise each element of A to the power of `p`.
 
+### Other methods
+* `inverse()`: return inverse of the matrix (if exists).
+* `cofactor(i,j)`: return matrix formed without the ith row & jth column.
+* `adjoint()`: return the adjoint matrix (transpose of the cofactor matrix).
+* `det()`: determinant of the matrix.
+* `sum()`: return the sum of all elements.
+* `max()`: return the maximum value.
+* `min()`: return the minimum value.
+
 ### Reference
 * https://medium.com/@furkanicus/how-to-create-a-matrix-class-using-c-3641f37809c7
 * https://www.quantstart.com/articles/Matrix-Classes-in-C-The-Header-File/
+* https://www.geeksforgeeks.org/adjoint-inverse-matrix/?ref=lbp
