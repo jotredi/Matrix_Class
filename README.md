@@ -3,6 +3,7 @@ This is a very useful, extensible and reusable Matrix class with the most common
 
 ### Constructors
 * `matrix(r, c, initial)`: create a matrix with `r` rows, `c` columns & `initial` as initial value.
+* `matrix(r, c, file)`: create a matrix with `r` rows and `c` columns filled with data from `file`.
 * `matrix(n)`: create an identity matrix of size `n`.
 * `matrix()`: empty matrix with 0 rows & 0 cols.
 
@@ -10,6 +11,9 @@ Example:
 ```c++
 // Creation of 3x3 matrix with initial value of 1 and type int:
 matrix<int> A (3,3,1);
+
+// Creation of a 10x2 matrix from file "data.txt" and type float:
+matrix<float> F (10,2,"data.txt");
 
 // Identity matrix of size 3:
 matrix<int> I (3);
@@ -48,14 +52,18 @@ matrix<double> v (3,1);
 * `A / B`: scalar division.
 * `A ^ p`: raise each element of A to the power of `p`.
 
+### Math methods
+* `sum()`: return the sum of all elements.
+* `max()`: return the maximum value.
+* `min()`: return the minimum value.
+* `mean()`: return the mean of all elements.
+* `ln()`: return the natural logarithm of each element.
+
 ### Other methods
 * `inverse()`: return inverse of the matrix (if exists).
 * `cofactor(i,j)`: return matrix formed without the ith row & jth column.
 * `adjoint()`: return the adjoint matrix (transpose of the cofactor matrix).
 * `det()`: determinant of the matrix.
-* `sum()`: return the sum of all elements.
-* `max()`: return the maximum value.
-* `min()`: return the minimum value.
 
 ### Reference
 * https://medium.com/@furkanicus/how-to-create-a-matrix-class-using-c-3641f37809c7
