@@ -13,6 +13,34 @@ matrix<X>::matrix(unsigned r, unsigned c, X initial){
   for (unsigned i=0; i<M.size(); ++i)  M[i].resize(c, initial);
 }
 
+//Read matrix from file
+template <class X>
+matrix<X>::matrix(unsigned r, unsigned c, std::string file){
+  // Initialize matrix dimmensions
+  rows = r;
+  cols = c;
+  M.resize(r);
+  for (unsigned i=0; i<M.size(); ++i)  M[i].resize(c);
+
+  // Read file
+  std::ifstream data_file(file);
+  std::istream_iterator<X> start(data_file), end;
+  std::vector<X> data(start, end);
+
+  // Check dimmensions of file
+  if(data.size() != rows*cols){
+    throw std::logic_error( "Dimmensions are not correct" );
+  }
+
+  // Load data
+  unsigned pos = 0;
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j){
+      M[i][j] = data[pos++];
+    }
+  }
+}
+
 //Identity matrix of size n
 template <class X>
 matrix<X>::matrix(unsigned n){
@@ -235,6 +263,58 @@ matrix<X> matrix<X>::operator^(X p){
 }
 
 
+//=============== MATH METHODS ===============//
+//Sum of all elements
+template <class X>
+X matrix<X>::sum(){
+  X sum = 0;
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j) sum += M[i][j];
+  }
+  return sum;
+}
+
+//Max value
+template <class X>
+X matrix<X>::max(){
+  X max = - std::numeric_limits<X>::infinity();
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j){
+      if (M[i][j] > max)  max = M[i][j];
+    }
+  }
+  return max;
+}
+
+//Min value
+template <class X>
+X matrix<X>::min(){
+  X min = std::numeric_limits<X>::infinity();
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j){
+      if (M[i][j] < min)  min = M[i][j];
+    }
+  }
+  return min;
+}
+
+// Mean
+template <class X>
+double matrix<X>::mean(){return (double) sum()/(rows*cols);}
+
+// Natural Log
+template <class X>
+matrix<double> matrix<X>::ln(){
+  matrix<double> R(rows,cols);
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j){
+      R(i,j) = log(M[i][j]);
+    }
+  }
+  return R;
+}
+
+
 //=============== OTHER METHODS ===============//
 //Cofactor of a Matrix
 template <class X>
@@ -319,40 +399,6 @@ X matrix<X>::det(){
     sign = -sign; // alternate sign
   }
   return d;
-}
-
-//Sum of all elements
-template <class X>
-X matrix<X>::sum(){
-  X sum = 0;
-  for(unsigned i=0; i<rows; ++i){
-    for(unsigned j=0; j<cols; ++j) sum += M[i][j];
-  }
-  return sum;
-}
-
-//Max value
-template <class X>
-X matrix<X>::max(){
-  X max = - std::numeric_limits<X>::infinity();
-  for(unsigned i=0; i<rows; ++i){
-    for(unsigned j=0; j<cols; ++j){
-      if (M[i][j] > max)  max = M[i][j];
-    }
-  }
-  return max;
-}
-
-//Min value
-template <class X>
-X matrix<X>::min(){
-  X min = std::numeric_limits<X>::infinity();
-  for(unsigned i=0; i<rows; ++i){
-    for(unsigned j=0; j<cols; ++j){
-      if (M[i][j] < min)  min = M[i][j];
-    }
-  }
-  return min;
 }
 
 
