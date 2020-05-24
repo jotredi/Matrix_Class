@@ -38,8 +38,10 @@ public:
   //Destructor
   ~matrix(void);
 
-  //Resize
+  //Change
   void resize(unsigned, unsigned, X = 0.0);
+  void insertRow(unsigned, X = 0.0);
+  void insertCol(unsigned, X = 0.0);
 
   //Rows & Cols
   void setRow(unsigned, std::vector<X>);
@@ -77,7 +79,7 @@ public:
   X det();
 
   //Access methods
-  X& operator()(const unsigned &, const unsigned &);
+  X& operator()(const unsigned &, const unsigned & = 0);
   unsigned getRows() const;
   unsigned getCols() const;
   void print() const;

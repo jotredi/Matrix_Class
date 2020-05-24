@@ -3,7 +3,7 @@
 
 #include "Matrix.hpp"
 
-//================== CONSTRUCTORS ==================//
+//=================== CONSTRUCTORS ===================//
 //Usual constructor
 template <class X>
 matrix<X>::matrix(unsigned r, unsigned c, X initial){
@@ -65,7 +65,7 @@ template <class X>
 matrix<X>::~matrix(void){}
 
 
-//==================== RESIZE ===================//
+//==================== CHANGE METHODS ===================//
 template <class X>
 void matrix<X>::resize(unsigned r, unsigned c, X initial){
   rows = r;
@@ -74,8 +74,24 @@ void matrix<X>::resize(unsigned r, unsigned c, X initial){
   for (unsigned i=0; i<M.size(); ++i)  M[i].resize(c, initial);
 }
 
+//Insert row
+template <class X>
+void matrix<X>::insertRow(unsigned r, X value){
+  M.insert(M.begin() + r, std::vector<X> (cols, value));
+  rows += 1;
+}
 
-//================= ROWS & COLS =================//
+//Insert column
+template <class X>
+void matrix<X>::insertCol(unsigned c, X value){
+  for(unsigned i=0; i<rows; ++i){
+    M[i].insert(M[i].begin() + c, value);
+  }
+  cols += 1;
+}
+
+
+//=================== ROWS & COLS ===================//
 //Set a row
 template <class X>
 void matrix<X>::setRow(unsigned i, std::vector<X> v){
