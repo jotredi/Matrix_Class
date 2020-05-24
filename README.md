@@ -25,12 +25,17 @@ matrix<double> v (3,1);
 
 ### Access Methods
 * `M (i,j)`: access the ith, jth element.
+* `v (i)`: access the ith element of a column vector.
 * `getRows()`: return number of rows.
 * `getCols()`: return number of columns.
 * `print()`: print matrix.
 
-### Rows & Cols Methods
+### Change Methods
 * `resize(r, c, initial)`: resize the matrix with `r` rows, `c` columns & `initial` value.
+* `insertRow(i, value)`: insert a new row in ith position initialized with `value`.
+* `insertCol(j, value)`: insert a new column in jth position initialized with `value`.
+
+### Rows & Cols Methods
 * `setRow(i, v)`: set the ith row with vector `v`.
 * `setCol(j, v)`: set the jth column with vector `v`.
 * `getRow(i)`: get ith row.
