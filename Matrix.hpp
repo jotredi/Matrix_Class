@@ -31,55 +31,66 @@ template <class X>
 class matrix{
 public:
   //Constructors
-  matrix(unsigned, unsigned, X = 0.0);
-  matrix(unsigned, unsigned, std::string);
+  matrix(unsigned, unsigned, const X& = 0.0);
+  matrix(unsigned, unsigned, const std::string);
   matrix(unsigned);
   matrix(void);
   //Destructor
-  ~matrix(void);
+  virtual ~matrix(void);
 
   //Change
-  void resize(unsigned, unsigned, X = 0.0);
-  void insertRow(unsigned, X = 0.0);
-  void insertCol(unsigned, X = 0.0);
+  void resize(unsigned, unsigned, const X& = 0.0);
+  void insertRow(unsigned, const X& = 0.0);
+  void insertCol(unsigned, const X& = 0.0);
 
   //Rows & Cols
-  void setRow(unsigned, std::vector<X>);
-  void setCol(unsigned, std::vector<X>);
-  std::vector<X> getRow(const unsigned &);
-  std::vector<X> getCol(const unsigned &);
-  X sumRow(const unsigned &);
-  X sumCol(const unsigned &);
+  void setRow(unsigned, const std::vector<X> &);
+  void setCol(unsigned, const std::vector<X> &);
+  std::vector<X> getRow(const unsigned &) const;
+  std::vector<X> getCol(const unsigned &) const;
+  X sumRow(const unsigned &) const;
+  X sumCol(const unsigned &) const;
 
   //Matrix Operations
-  matrix<X> operator+(matrix<X>);
-  matrix<X> operator-(matrix<X>);
-  matrix<X> operator*(matrix<X>);
-  matrix<X> operator&(matrix<X>);
-  matrix<X> T();
+  matrix<X> operator+(const matrix<X> &) const;
+  matrix<X> operator-(const matrix<X> &) const;
+  matrix<X> operator*(const matrix<X> &) const;
+  matrix<X> operator&(const matrix<X> &) const;
+
+  void operator+=(const matrix<X> &);
+  void operator-=(const matrix<X> &);
 
   //Scalar Operations
-  matrix<X> operator+(X);
-  matrix<X> operator-(X);
-  matrix<X> operator*(X);
-  matrix<X> operator/(X);
-  matrix<X> operator^(X);
+  matrix<X> operator+(const X&) const;
+  matrix<X> operator-(const X&) const;
+  matrix<X> operator*(const X&) const;
+  matrix<X> operator/(const X&) const;
+  matrix<X> operator^(const X&) const;
+
+  void operator+=(const X&);
+  void operator-=(const X&);
+  void operator*=(const X&);
+  void operator/=(const X&);
+  void operator^=(const X&);
 
   //Math methods
-  X sum();
-  X max();
-  X min();
-  double mean();
-  matrix<double> ln();
+  X sum() const;
+  X max() const;
+  X min() const;
+  double mean() const;
+  matrix<double> ln() const;
+  matrix<double> sqr() const;
 
   //Other methods
-  matrix<X> cofactor(unsigned, unsigned);
-  matrix<double> inverse();
-  matrix<X> adjoint();
-  X det();
+  matrix<X> cofactor(const unsigned &, const unsigned &) const;
+  matrix<double> inverse() const;
+  matrix<X> adjoint() const;
+  matrix<X> T() const;
+  X det() const;
 
   //Access methods
   X& operator()(const unsigned &, const unsigned & = 0);
+  const X& operator()(const unsigned &, const unsigned & = 0) const;
   unsigned getRows() const;
   unsigned getCols() const;
   void print() const;

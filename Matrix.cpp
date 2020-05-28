@@ -1,3 +1,9 @@
+/****************************************
+Matrix Class
+============
+Copyright (C) 2020  Jose Trescastro Diaz
+****************************************/
+
 #ifndef MATRIX_CPP
 #define MATRIX_CPP
 
@@ -6,7 +12,7 @@
 //=================== CONSTRUCTORS ===================//
 //Usual constructor
 template <class X>
-matrix<X>::matrix(unsigned r, unsigned c, X initial){
+matrix<X>::matrix(unsigned r, unsigned c, const X& initial){
   rows = r;
   cols = c;
   M.resize(r);
@@ -15,7 +21,7 @@ matrix<X>::matrix(unsigned r, unsigned c, X initial){
 
 //Read matrix from file
 template <class X>
-matrix<X>::matrix(unsigned r, unsigned c, std::string file){
+matrix<X>::matrix(unsigned r, unsigned c, const std::string file){
   // Initialize matrix dimmensions
   rows = r;
   cols = c;
@@ -67,7 +73,7 @@ matrix<X>::~matrix(void){}
 
 //==================== CHANGE METHODS ===================//
 template <class X>
-void matrix<X>::resize(unsigned r, unsigned c, X initial){
+void matrix<X>::resize(unsigned r, unsigned c, const X& initial){
   rows = r;
   cols = c;
   M.resize(r);
@@ -76,14 +82,14 @@ void matrix<X>::resize(unsigned r, unsigned c, X initial){
 
 //Insert row
 template <class X>
-void matrix<X>::insertRow(unsigned r, X value){
+void matrix<X>::insertRow(unsigned r, const X& value){
   M.insert(M.begin() + r, std::vector<X> (cols, value));
   rows += 1;
 }
 
 //Insert column
 template <class X>
-void matrix<X>::insertCol(unsigned c, X value){
+void matrix<X>::insertCol(unsigned c, const X& value){
   for(unsigned i=0; i<rows; ++i){
     M[i].insert(M[i].begin() + c, value);
   }
@@ -94,14 +100,14 @@ void matrix<X>::insertCol(unsigned c, X value){
 //=================== ROWS & COLS ===================//
 //Set a row
 template <class X>
-void matrix<X>::setRow(unsigned i, std::vector<X> v){
+void matrix<X>::setRow(unsigned i, const std::vector<X> &v){
   if(cols==v.size())  M[i]=v;
   else  throw std::invalid_argument( "setRow: Invalid row size" );
 }
 
 //Set a column
 template <class X>
-void matrix<X>::setCol(unsigned j, std::vector<X> v){
+void matrix<X>::setCol(unsigned j, const std::vector<X> &v){
   if(rows==v.size()){
     for(unsigned i=0; i<rows; ++i)  M[i][j]=v[i];
   }
@@ -110,14 +116,14 @@ void matrix<X>::setCol(unsigned j, std::vector<X> v){
 
 //Get a row
 template <class X>
-std::vector<X> matrix<X>::getRow(const unsigned &i){
+std::vector<X> matrix<X>::getRow(const unsigned &i) const{
   std::vector<X> v = M[i];
   return v;
 }
 
 //Get a column
 template <class X>
-std::vector<X> matrix<X>::getCol(const unsigned &j){
+std::vector<X> matrix<X>::getCol(const unsigned &j) const{
   std::vector<X> v(rows);
   for(unsigned i=0; i<rows; ++i) v[i]=M[i][j];
   return v;
@@ -125,7 +131,7 @@ std::vector<X> matrix<X>::getCol(const unsigned &j){
 
 //Sum of elements from a row
 template <class X>
-X matrix<X>::sumRow(const unsigned &i){
+X matrix<X>::sumRow(const unsigned &i) const{
   X sum = 0;
   for (unsigned c=0; c<cols; ++c) sum += M[i][c];
   return sum;
@@ -133,7 +139,7 @@ X matrix<X>::sumRow(const unsigned &i){
 
 //Sum of elements from a column
 template <class X>
-X matrix<X>::sumCol(const unsigned &j){
+X matrix<X>::sumCol(const unsigned &j) const{
   X sum = 0;
   for (unsigned r=0; r<rows; ++r) sum += M[r][j];
   return sum;
@@ -143,7 +149,7 @@ X matrix<X>::sumCol(const unsigned &j){
 //=============== MATRIX OPERATIONS ===============//
 //Addition of two matrices
 template <class X>
-matrix<X> matrix<X>::operator+(matrix<X> B){
+matrix<X> matrix<X>::operator+(const matrix<X> &B) const{
   if((rows != B.getRows()) || (cols != B.getCols())){
     throw std::logic_error( "Matrix dimensions don't match" );
   }
@@ -158,7 +164,7 @@ matrix<X> matrix<X>::operator+(matrix<X> B){
 
 //Subtraction of two matrices
 template <class X>
-matrix<X> matrix<X>::operator-(matrix<X> B){
+matrix<X> matrix<X>::operator-(const matrix<X> &B) const{
   if((rows != B.getRows()) || (cols != B.getCols())){
     throw std::logic_error( "Matrix dimensions don't match" );
   }
@@ -173,7 +179,7 @@ matrix<X> matrix<X>::operator-(matrix<X> B){
 
 //Matrix multiplication
 template <class X>
-matrix<X> matrix<X>::operator*(matrix<X> B){
+matrix<X> matrix<X>::operator*(const matrix<X> &B) const{
   //Number of rows and cols for each matrix
   unsigned r1, c1, r2, c2;
   r1 = rows;
@@ -196,14 +202,14 @@ matrix<X> matrix<X>::operator*(matrix<X> B){
     return R;
   }
   else{
-    //Matrix dimenssions are not the same so we return an error message
+    //Matrix dimensions are not the same so we return an error message
     throw std::logic_error( "Matrix dimensions don't match" );
   }
 }
 
 //Element-wise multiplication
 template <class X>
-matrix<X> matrix<X>::operator&(matrix<X> B){
+matrix<X> matrix<X>::operator&(const matrix<X> &B) const{
   if((rows != B.getRows()) || (cols != B.getCols())){
     throw std::logic_error( "Matrix dimensions don't match" );
   }
@@ -216,21 +222,38 @@ matrix<X> matrix<X>::operator&(matrix<X> B){
   return R;
 }
 
-//Matrix transpose
+
+//Cumulative addition
 template <class X>
-matrix<X> matrix<X>::T(){
-  matrix<X> transposed(cols,rows);
-  for(unsigned i=0; i<rows; ++i){
-    for(unsigned j=0; j<cols; ++j) transposed(j,i)=M[i][j];
+void matrix<X>::operator+=(const matrix<X> &B){
+  if((rows != B.getRows()) || (cols != B.getCols())){
+    throw std::logic_error( "Matrix dimensions don't match" );
   }
-  return transposed;
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j){
+      M[i][j] += B(i,j);
+    }
+  }
+}
+
+//Cumulative subtraction
+template <class X>
+void matrix<X>::operator-=(const matrix<X> &B){
+  if((rows != B.getRows()) || (cols != B.getCols())){
+    throw std::logic_error( "Matrix dimensions don't match" );
+  }
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j){
+      M[i][j] -= B(i,j);
+    }
+  }
 }
 
 
 //=============== SCALAR OPERATIONS ===============//
 //Scalar Addition
 template <class X>
-matrix<X> matrix<X>::operator+(X s){
+matrix<X> matrix<X>::operator+(const X& s) const{
   matrix<X> R(rows,cols);
   for(unsigned i=0; i<rows; ++i){
     for(unsigned j=0; j<cols; ++j) R(i,j) = M[i][j]+s;
@@ -240,7 +263,7 @@ matrix<X> matrix<X>::operator+(X s){
 
 //Scalar Subtraction
 template <class X>
-matrix<X> matrix<X>::operator-(X s){
+matrix<X> matrix<X>::operator-(const X& s) const{
   matrix<X> R(rows,cols);
   for(unsigned i=0; i<rows; ++i){
     for(unsigned j=0; j<cols; ++j) R(i,j) = M[i][j]-s;
@@ -250,7 +273,7 @@ matrix<X> matrix<X>::operator-(X s){
 
 //Scalar Multiplication
 template <class X>
-matrix<X> matrix<X>::operator*(X s){
+matrix<X> matrix<X>::operator*(const X& s) const{
   matrix<X> R(rows,cols);
   for(unsigned i=0; i<rows; ++i){
     for(unsigned j=0; j<cols; ++j) R(i,j) = M[i][j]*s;
@@ -260,7 +283,7 @@ matrix<X> matrix<X>::operator*(X s){
 
 //Scalar Division
 template <class X>
-matrix<X> matrix<X>::operator/(X s){
+matrix<X> matrix<X>::operator/(const X& s) const{
   matrix<X> R(rows,cols);
   for(unsigned i=0; i<rows; ++i){
     for(unsigned j=0; j<cols; ++j) R(i,j) = M[i][j]/s;
@@ -270,7 +293,7 @@ matrix<X> matrix<X>::operator/(X s){
 
 //Power
 template <class X>
-matrix<X> matrix<X>::operator^(X p){
+matrix<X> matrix<X>::operator^(const X& p) const{
   matrix<X> R(rows,cols);
   for(unsigned i=0; i<rows; ++i){
     for(unsigned j=0; j<cols; ++j) R(i,j) = pow(M[i][j],p);
@@ -279,10 +302,51 @@ matrix<X> matrix<X>::operator^(X p){
 }
 
 
+//Cumulative Scalar Addition
+template <class X>
+void matrix<X>::operator+=(const X& s){
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j) M[i][j] += s;
+  }
+}
+
+//Cumulative Scalar Subtraction
+template <class X>
+void matrix<X>::operator-=(const X& s){
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j) M[i][j] -= s;
+  }
+}
+
+//Cumulative Scalar Multiplication
+template <class X>
+void matrix<X>::operator*=(const X& s){
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j) M[i][j] *= s;
+  }
+}
+
+//Cumulative Scalar Division
+template <class X>
+void matrix<X>::operator/=(const X& s){
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j) M[i][j] /= s;
+  }
+}
+
+//Cumulative Power
+template <class X>
+void matrix<X>::operator^=(const X& p){
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j) M[i][j] = pow(M[i][j],p);
+  }
+}
+
+
 //=============== MATH METHODS ===============//
 //Sum of all elements
 template <class X>
-X matrix<X>::sum(){
+X matrix<X>::sum() const{
   X sum = 0;
   for(unsigned i=0; i<rows; ++i){
     for(unsigned j=0; j<cols; ++j) sum += M[i][j];
@@ -292,7 +356,7 @@ X matrix<X>::sum(){
 
 //Max value
 template <class X>
-X matrix<X>::max(){
+X matrix<X>::max() const{
   X max = - std::numeric_limits<X>::infinity();
   for(unsigned i=0; i<rows; ++i){
     for(unsigned j=0; j<cols; ++j){
@@ -304,7 +368,7 @@ X matrix<X>::max(){
 
 //Min value
 template <class X>
-X matrix<X>::min(){
+X matrix<X>::min() const{
   X min = std::numeric_limits<X>::infinity();
   for(unsigned i=0; i<rows; ++i){
     for(unsigned j=0; j<cols; ++j){
@@ -316,11 +380,11 @@ X matrix<X>::min(){
 
 // Mean
 template <class X>
-double matrix<X>::mean(){return (double) sum()/(rows*cols);}
+double matrix<X>::mean() const{return (double) sum()/(rows*cols);}
 
 // Natural Log
 template <class X>
-matrix<double> matrix<X>::ln(){
+matrix<double> matrix<X>::ln() const{
   matrix<double> R(rows,cols);
   for(unsigned i=0; i<rows; ++i){
     for(unsigned j=0; j<cols; ++j){
@@ -330,11 +394,23 @@ matrix<double> matrix<X>::ln(){
   return R;
 }
 
+// Square Root
+template <class X>
+matrix<double> matrix<X>::sqr() const{
+  matrix<double> R(rows,cols);
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j){
+      R(i,j) = sqrt(M[i][j]);
+    }
+  }
+  return R;
+}
+
 
 //=============== OTHER METHODS ===============//
 //Cofactor of a Matrix
 template <class X>
-matrix<X> matrix<X>::cofactor(unsigned r, unsigned c){
+matrix<X> matrix<X>::cofactor(const unsigned &r, const unsigned &c) const{
   if(rows != cols){
     throw std::logic_error( "Matrix must be a square matrix" );
   }
@@ -359,7 +435,7 @@ matrix<X> matrix<X>::cofactor(unsigned r, unsigned c){
 
 //Inverse
 template <class X>
-matrix<double> matrix<X>::inverse(){
+matrix<double> matrix<X>::inverse() const{
   // Check if determinat is 0 (Singular matrix)
   X d = det();
   if (d == 0){
@@ -379,7 +455,7 @@ matrix<double> matrix<X>::inverse(){
 
 //Adjoint
 template <class X>
-matrix<X> matrix<X>::adjoint(){
+matrix<X> matrix<X>::adjoint() const{
   if(rows != cols){
     throw std::logic_error( "Matrix must be a square matrix" );
   }
@@ -400,9 +476,19 @@ matrix<X> matrix<X>::adjoint(){
   return A;
 }
 
+//Matrix transpose
+template <class X>
+matrix<X> matrix<X>::T() const{
+  matrix<X> transposed(cols,rows);
+  for(unsigned i=0; i<rows; ++i){
+    for(unsigned j=0; j<cols; ++j) transposed(j,i)=M[i][j];
+  }
+  return transposed;
+}
+
 //Determinant of a Matrix
 template <class X>
-X matrix<X>::det(){
+X matrix<X>::det() const{
   if(rows != cols){
     throw std::logic_error( "Matrix must be a square matrix" );
   }
@@ -422,6 +508,12 @@ X matrix<X>::det(){
 //Matrix access in the form M(i,j)
 template <class X>
 X& matrix<X>::operator()(const unsigned &i, const unsigned &j){return M[i][j];}
+
+//Matrix access in the form M(i,j) for constant
+template <class X>
+const X& matrix<X>::operator()(const unsigned &i, const unsigned &j) const{
+  return M[i][j];
+}
 
 //Get number of rows and columns
 template <class X>
