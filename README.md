@@ -1,5 +1,5 @@
 # Matrix_Class
-This is a very useful, extensible and reusable Matrix class with the most common matrix/vector operations and methods for C++.
+This is a very useful, robust and extensible Matrix class with the most common matrix/vector operations and methods for C++.
 
 ### Constructors
 * `matrix(r, c, initial)`: create a matrix with `r` rows, `c` columns & `initial` as initial value.
@@ -63,6 +63,7 @@ matrix<double> v (3,1);
 * `min()`: return the minimum value.
 * `mean()`: return the mean of all elements.
 * `ln()`: return the natural logarithm of each element.
+* `sqr()`: return the square root of each element.
 
 ### Other methods
 * `inverse()`: return inverse of the matrix (if exists).
